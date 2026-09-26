@@ -92,6 +92,13 @@ body {
   position: relative;
 }
 
+body.loading,
+html.loading {
+  overflow: hidden !important;
+  height: 100vh !important;
+  touch-action: none !important;
+}
+
 /* Premium Grain Overlay */
 body::after {
   content: "";
@@ -579,6 +586,22 @@ ul {
 .hero__bg-left {
   max-width: min(100%, 34vw);
   color: var(--ink);
+}
+
+@media (max-width: 1024px) {
+  .hero__bg-content {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    padding-top: 12vh;
+  }
+  .hero__bg-left {
+    max-width: 90vw;
+  }
+  .hero__bg-stats {
+    justify-content: center;
+  }
 }
 
 .hero__can-arrows {

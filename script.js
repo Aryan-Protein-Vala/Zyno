@@ -50,6 +50,7 @@ function initLoader() {
           loader.classList.add('hide');
           loader.style.display = 'none';
           document.body.classList.remove('loading');
+          document.documentElement.classList.remove('loading');
           // NOW init the site after loader is fully gone
           initSite();
         }

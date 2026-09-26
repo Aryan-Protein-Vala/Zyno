@@ -490,7 +490,7 @@ function initShopInteractions() {
       e.preventDefault();
       const span = btn.querySelector('span:first-child');
       const orig = span.textContent;
-      span.textContent = 'Added! 🫧';
+      span.textContent = 'Added!';
       btn.style.background = '#C8B6E2';
       btn.style.color = '#301736';
       setTimeout(() => { span.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 1500);
@@ -501,7 +501,7 @@ function initShopInteractions() {
   document.querySelectorAll('.shop__card-buy').forEach(btn => {
     btn.addEventListener('click', () => {
       const orig = btn.textContent;
-      btn.textContent = 'Added! 🫧';
+      btn.textContent = 'Added!';
       btn.style.background = '#C8B6E2';
       btn.style.color = '#301736';
       setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 1500);
@@ -600,7 +600,7 @@ function initNewsletterForm() {
     e.preventDefault();
     const btn = form.querySelector('.cta__submit');
     const orig = btn.textContent;
-    btn.textContent = "You're in! 🫧✨";
+    btn.textContent = "You're in!";
     btn.style.background = '#A8D5BA';
     setTimeout(() => { btn.textContent = orig; btn.style.background = ''; form.reset(); }, 2500);
   });

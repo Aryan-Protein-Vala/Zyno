@@ -458,7 +458,6 @@ ul {
   height: 100%;
   pointer-events: auto;
   touch-action: pan-y;
-  cursor: grab;
 }
 
 .hero__foreground {
@@ -576,7 +575,7 @@ ul {
 .hero__bg-content {
   position: absolute;
   inset: 0;
-  z-index: 22;
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: space-between;

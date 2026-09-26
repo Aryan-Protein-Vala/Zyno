@@ -1743,21 +1743,6 @@ ul {
   overflow: hidden;
 }
 
-.footer__mascot {
-  position: absolute;
-  right: 10%;
-  bottom: -20px;
-  width: clamp(120px, 15vw, 180px);
-  mix-blend-mode: multiply;
-  pointer-events: none;
-  animation: peekaboo 4s ease-in-out infinite alternate;
-}
-
-@keyframes peekaboo {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-15px) rotate(-5deg); }
-}
-
 .footer__inner {
   max-width: var(--max-width);
   margin: 0 auto;

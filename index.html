@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FAF7F2">
+
+  <title>ZYNO · Fizz That Hits Different</title>
+  <meta name="description" content="ZYNO is effervescence that actually does something. Glutathione, Apple Cider Vinegar, Electrolytes + Vit C. Pop a can. Feel alive. drinkzyno.com">
+  <meta property="og:title" content="ZYNO · Fizz That Hits Different">
+  <meta property="og:description" content="Effervescence that actually does something. Three cans. Zero excuses.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://drinkzyno.com">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="canonical" href="https://drinkzyno.com">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- GSAP + ScrollTrigger for buttery animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" defer></script>
+
+  <!-- Three.js for 3D floating can -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+</head>
+<body>
+
+  <!-- ═══════════════ LOADING SCREEN ═══════════════ -->
+  <div id="loader" class="loader">
+    <div class="loader__inner">
+      <div class="loader__logo">
+        <span class="loader__letter" data-letter>Z</span>
+        <span class="loader__letter" data-letter>Y</span>
+        <span class="loader__letter" data-letter>N</span>
+        <span class="loader__letter" data-letter>O</span>
+        <span class="loader__dot" data-letter>.</span>
+      </div>
+      <div class="loader__capsules">
+        <div class="loader__capsule loader__capsule--1">Glutathione</div>
+        <div class="loader__capsule loader__capsule--2">Apple Cider Vinegar</div>
+        <div class="loader__capsule loader__capsule--3">Electrolytes + Vit C</div>
+      </div>
+    </div>
+    <div class="loader__bubbles" aria-hidden="true"></div>
+  </div>
+
+  <!-- ═══════════════ NAVIGATION ═══════════════ -->
+  <nav id="nav" class="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo" aria-label="ZYNO — back to top">
+        <span class="nav__logo-text">ZYNO</span>
+        <span class="nav__logo-dot" aria-hidden="true"></span>
+      </a>
+
+      <ul class="nav__links">
+        <li><a href="#products" class="nav__link">Flavors</a></li>
+        <li><a href="#ingredients" class="nav__link">What's Inside</a></li>
+        <li><a href="#about" class="nav__link">Our Story</a></li>
+        <li><a href="#shop" class="nav__link nav__link--cta">Shop Now →</a></li>
+      </ul>
+
+      <button class="nav__burger" aria-label="Open menu" id="nav-burger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu">
+    <button class="mobile-menu__close" aria-label="Close menu" id="mobile-close">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5L19 19M19 5L5 19"/></svg>
+    </button>
+    <div class="mobile-menu__links">
+      <a href="#products" class="mobile-menu__link">Flavors</a>
+      <a href="#ingredients" class="mobile-menu__link">What's Inside</a>
+      <a href="#about" class="mobile-menu__link">Our Story</a>
+      <a href="#shop" class="mobile-menu__link mobile-menu__link--cta">Shop Now →</a>
+    </div>
+  </div>
+
+  <main>
+    <!-- ═══════════════ HERO SECTION ═══════════════ -->
+    <section id="hero" class="hero">
+      <!-- Circle reveal background -->
+      <div class="hero__reveal" id="hero-reveal"></div>
+
+      <!-- 3D Canvas for floating can -->
+      <canvas id="hero-canvas" class="hero__canvas"></canvas>
+
+      <!-- Foreground content that fades away -->
+      <div class="hero__foreground" id="hero-fg">
+        <div class="hero__title-wrap">
+          <h1 class="hero__title">
+            <span class="hero__title-letter" data-hero-letter>Z</span>
+            <span class="hero__title-letter" data-hero-letter>Y</span>
+            <span class="hero__title-letter" data-hero-letter>N</span>
+            <span class="hero__title-letter" data-hero-letter>O</span>
+            <span class="hero__title-dot" data-hero-letter>.</span>
+          </h1>
+        </div>
+        <div class="hero__bottom">
+          <p class="hero__tagline">Fizz that<br>hits different.</p>
+          <div class="hero__scroll-hint-spacer" aria-hidden="true" style="height: 60px;"></div>
+          <p class="hero__sub">Effervescent wellness<br>drinkzyno.com</p>
+        </div>
+      </div>
+
+      <!-- Background content that appears after reveal -->
+      <div class="hero__bg-content" id="hero-bg-content">
+        <div class="hero__bg-left">
+          <div class="hero__bg-label"><span>01</span><span class="hero__bg-sep">/</span>The Fizz</div>
+          <h2 class="hero__bg-heading">Not your<br>basic bubbles.</h2>
+          <div class="hero__bg-rule"></div>
+          <p class="hero__bg-desc">Three effervescent blends. Each can packed with functional goodness that your body actually wants. No cap, just carbonation with a purpose.</p>
+          <div class="hero__bg-stats">
+            <span><strong>3</strong> functional blends</span>
+            <span aria-hidden="true">·</span>
+            <span><strong>0</strong> BS ingredients</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ MARQUEE STRIP ═══════════════ -->
+    <section class="marquee-strip">
+      <div class="marquee__track">
+        <div class="marquee__content">
+          <span>POP. SIP. GLOW. ✦</span>
+          <span>FIZZ THAT SLAPS ✦</span>
+          <span>YOUR GUT CALLED. IT WANTS IN. ✦</span>
+          <span>EFFERVESCENT AF ✦</span>
+          <span>NOT YOUR NANI'S SODA ✦</span>
+          <span>DRINK ZYNO OR CRY ABOUT IT ✦</span>
+          <span>BUBBLES WITH BENEFITS ✦</span>
+          <span>GLOW UP LOADING... ✦</span>
+        </div>
+        <div class="marquee__content" aria-hidden="true">
+          <span>POP. SIP. GLOW. ✦</span>
+          <span>FIZZ THAT SLAPS ✦</span>
+          <span>YOUR GUT CALLED. IT WANTS IN. ✦</span>
+          <span>EFFERVESCENT AF ✦</span>
+          <span>NOT YOUR NANI'S SODA ✦</span>
+          <span>DRINK ZYNO OR CRY ABOUT IT ✦</span>
+          <span>BUBBLES WITH BENEFITS ✦</span>
+          <span>GLOW UP LOADING... ✦</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ PRODUCTS / FLAVORS ═══════════════ -->
+    <section id="products" class="products">
+      <div class="products__header">
+        <div class="products__label"><span>02</span><span class="products__sep">/</span>Three Flavors</div>
+        <h2 class="products__title">What the fuck is in the can<span class="dot-accent">.</span></h2>
+        <p class="products__subtitle">Three cans. Three chaotic energies. Zero bullshit. Pick your poison.</p>
+      </div>
+
+      <div class="products__grid">
+        <!-- Card 1: Glutathione -->
+        <article class="product-card" data-product="glutathione" data-color="#C8B6E2">
+          <div class="product-card__image-wrap">
+            <div class="product-card__glow" style="background: radial-gradient(circle, #C8B6E2 0%, #C8B6E2cc 20%, transparent 70%)"></div>
+            <img src="assets/images/can-glutathione.jpg" alt="ZYNO Glutathione Can" class="product-card__image" loading="lazy" width="400" height="533">
+          </div>
+          <div class="product-card__info">
+            <div class="product-card__number">01</div>
+            <h3 class="product-card__name">Glutathione</h3>
+            <p class="product-card__tagline">The "Fake It Till You Glow" Can</p>
+            <p class="product-card__desc">Your liver is begging for this. Antioxidant overload that'll make you look like you drink 8 liters of water a day (we know you don't). Pop one before taking a mirror selfie.</p>
+            <div class="product-card__details">
+              <div class="product-card__detail"><span>Benefit</span><span>Anti-oxidant & Glow</span></div>
+              <div class="product-card__detail"><span>Vibe</span><span>Lavender dream</span></div>
+              <div class="product-card__detail"><span>Price</span><span>₹149</span></div>
+            </div>
+            <button class="product-card__btn" data-add-cart="glutathione">
+              <span>Add to Cart</span>
+              <span class="product-card__btn-arrow">→</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 2: Apple Cider Vinegar -->
+        <article class="product-card" data-product="acv" data-color="#E8C9A0">
+          <div class="product-card__image-wrap">
+            <div class="product-card__glow" style="background: radial-gradient(circle, #E8C9A0 0%, #E8C9A0cc 20%, transparent 70%)"></div>
+            <img src="assets/images/can-acv.jpg" alt="ZYNO Apple Cider Vinegar Can" class="product-card__image" loading="lazy" width="400" height="533">
+          </div>
+          <div class="product-card__info">
+            <div class="product-card__number">02</div>
+            <h3 class="product-card__name">Apple Cider<br>Vinegar</h3>
+            <p class="product-card__tagline">The "Fix My Shitty Diet" Can</p>
+            <p class="product-card__desc">ACV without tasting like a sweaty sock. Your messed-up gut is sending a thank you note right now. Drink this after eating absolute garbage.</p>
+            <div class="product-card__details">
+              <div class="product-card__detail"><span>Benefit</span><span>Gut health & Digestion</span></div>
+              <div class="product-card__detail"><span>Vibe</span><span>Peachy warmth</span></div>
+              <div class="product-card__detail"><span>Price</span><span>₹149</span></div>
+            </div>
+            <button class="product-card__btn" data-add-cart="acv">
+              <span>Add to Cart</span>
+              <span class="product-card__btn-arrow">→</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 3: Electrolytes + Vit C -->
+        <article class="product-card" data-product="electrolytes" data-color="#A8D5BA">
+          <div class="product-card__image-wrap">
+            <div class="product-card__glow" style="background: radial-gradient(circle, #A8D5BA 0%, #A8D5BAcc 20%, transparent 70%)"></div>
+            <img src="assets/images/can-electrolytes.jpg" alt="ZYNO Electrolytes + Vit C Can" class="product-card__image" loading="lazy" width="400" height="533">
+          </div>
+          <div class="product-card__info">
+            <div class="product-card__number">03</div>
+            <h3 class="product-card__name">Electrolytes<br>+ Vit C</h3>
+            <p class="product-card__tagline">The Hangover Killer</p>
+            <p class="product-card__desc">Hydration on fucking steroids. When water is too boring and you're contemplating your life choices from last night. Drink this to feel somewhat human again.</p>
+            <div class="product-card__details">
+              <div class="product-card__detail"><span>Benefit</span><span>Hydration & Immunity</span></div>
+              <div class="product-card__detail"><span>Vibe</span><span>Minty fresh chaos</span></div>
+              <div class="product-card__detail"><span>Price</span><span>₹149</span></div>
+            </div>
+            <button class="product-card__btn" data-add-cart="electrolytes">
+              <span>Add to Cart</span>
+              <span class="product-card__btn-arrow">→</span>
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ═══════════════ SCROLL SEQUENCE / FRAME ANIMATION ═══════════════ -->
+    <section class="scroll-sequence" id="scroll-sequence">
+      <div class="scroll-sequence__sticky">
+        <div class="scroll-sequence__frame active" data-frame="0">
+          <div class="scroll-sequence__text">
+            <h2 class="scroll-sequence__heading">Drop a tab<span class="dot-accent">.</span><br>Watch the magic<span class="dot-accent">.</span></h2>
+            <p class="scroll-sequence__desc">Every ZYNO starts with a magical effervescent tablet that dissolves into pure, unapologetic fizz. It's science, but make it sexy as fuck.</p>
+          </div>
+        </div>
+        <div class="scroll-sequence__frame" data-frame="1">
+          <div class="scroll-sequence__text">
+            <h2 class="scroll-sequence__heading">Functional<br>ingredients only<span class="dot-accent">.</span></h2>
+            <p class="scroll-sequence__desc">No random chemicals with names you can't pronounce. Just clean, effective ingredients that your body actually knows what to do with.</p>
+          </div>
+        </div>
+        <div class="scroll-sequence__frame" data-frame="2">
+          <div class="scroll-sequence__text">
+            <h2 class="scroll-sequence__heading">Taste so good<br>you'll forget<br>it's healthy<span class="dot-accent">.</span></h2>
+            <p class="scroll-sequence__desc">We spent unreasonable amounts of time making sure these taste absolutely banging. Your taste buds won't know they're being healthy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ INGREDIENTS SECTION ═══════════════ -->
+    <section id="ingredients" class="ingredients">
+      <div class="ingredients__header">
+        <div class="ingredients__label"><span>03</span><span class="ingredients__sep">·</span>Functional ingredients</div>
+        <h2 class="ingredients__title">What the hell is inside<span class="dot-accent">.</span></h2>
+      </div>
+
+      <div class="ingredients__tabs">
+        <button class="ingredients__tab active" data-tab="glutathione-tab">Glutathione</button>
+        <button class="ingredients__tab" data-tab="acv-tab">Apple Cider Vinegar</button>
+        <button class="ingredients__tab" data-tab="electrolytes-tab">Electrolytes + Vit C</button>
+      </div>
+
+      <div class="ingredients__panels">
+        <!-- Glutathione Panel -->
+        <div class="ingredients__panel active" id="glutathione-tab">
+          <div class="ingredients__panel-grid">
+            <div class="ingredients__panel-left">
+              <h3 class="ingredients__compound-name">Glutathione</h3>
+              <p class="ingredients__compound-latin">L-Glutathione (reduced)</p>
+              <p class="ingredients__compound-desc">The body's master antioxidant. Neutralizes free radicals, supports liver detox, and gives you that inside-out glow that no filter can fake. Basically your cells' bodyguard.</p>
+              <div class="ingredients__stats">
+                <div class="ingredients__stat"><span class="ingredients__stat-label">Source</span><span class="ingredients__stat-value">Fermented yeast extract</span></div>
+                <div class="ingredients__stat"><span class="ingredients__stat-label">Role</span><span class="ingredients__stat-value">Detox & radiance</span></div>
+                <div class="ingredients__stat"><span class="ingredients__stat-label">Dose</span><span class="ingredients__stat-value">250mg per serving</span></div>
+              </div>
+            </div>
+            <div class="ingredients__panel-right">
+              <div class="ingredients__molecule" data-molecule="glutathione">
+                <svg viewBox="0 0 200 200" class="ingredients__molecule-svg">
+                  <circle cx="100" cy="60" r="8" fill="#C8B6E2" opacity="0.8"/>
+                  <circle cx="60" cy="100" r="6" fill="#C8B6E2" opacity="0.6"/>
+                  <circle cx="140" cy="100" r="6" fill="#C8B6E2" opacity="0.6"/>
+                  <circle cx="80" cy="140" r="7" fill="#C8B6E2" opacity="0.7"/>
+                  <circle cx="120" cy="140" r="5" fill="#C8B6E2" opacity="0.5"/>
+                  <line x1="100" y1="60" x2="60" y2="100" stroke="#C8B6E2" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="100" y1="60" x2="140" y2="100" stroke="#C8B6E2" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="60" y1="100" x2="80" y2="140" stroke="#C8B6E2" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="140" y1="100" x2="120" y2="140" stroke="#C8B6E2" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="80" y1="140" x2="120" y2="140" stroke="#C8B6E2" stroke-width="1.5" opacity="0.4"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACV Panel -->
+        <div class="ingredients__panel" id="acv-tab">
+          <div class="ingredients__panel-grid">
+            <div class="ingredients__panel-left">
+              <h3 class="ingredients__compound-name">Apple Cider Vinegar</h3>
+              <p class="ingredients__compound-latin">Malus domestica fermentum</p>
+              <p class="ingredients__compound-desc">Mother's favorite (the ACV mother, not yours). Packed with prebiotics that keep your gut microbiome thriving. Supports digestion, metabolism, and that "I woke up like this" feeling.</p>
+              <div class="ingredients__stats">
+                <div class="ingredients__stat"><span class="ingredients__stat-label">Source</span><span class="ingredients__stat-value">Organic apple ferment</span></div>
+                <div class="ingredients__stat"><span class="ingredients__stat-label">Role</span><span class="ingredients__stat-value">Gut health & metabolism</span></div>
+                <div class="ingredients__stat"><span class="ingredients__stat-label">Dose</span><span class="ingredients__stat-value">500mg per serving</span></div>
+              </div>
+            </div>
+            <div class="ingredients__panel-right">
+              <div class="ingredients__molecule" data-molecule="acv">
+                <svg viewBox="0 0 200 200" class="ingredients__molecule-svg">
+                  <circle cx="100" cy="50" r="8" fill="#E8C9A0" opacity="0.8"/>
+                  <circle cx="50" cy="90" r="6" fill="#E8C9A0" opacity="0.6"/>
+                  <circle cx="150" cy="90" r="6" fill="#E8C9A0" opacity="0.6"/>
+                  <circle cx="70" cy="150" r="7" fill="#E8C9A0" opacity="0.7"/>
+                  <circle cx="130" cy="150" r="7" fill="#E8C9A0" opacity="0.7"/>
+                  <circle cx="100" cy="120" r="5" fill="#E8C9A0" opacity="0.5"/>
+                  <line x1="100" y1="50" x2="50" y2="90" stroke="#E8C9A0" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="100" y1="50" x2="150" y2="90" stroke="#E8C9A0" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="50" y1="90" x2="70" y2="150" stroke="#E8C9A0" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="150" y1="90" x2="130" y2="150" stroke="#E8C9A0" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="70" y1="150" x2="100" y2="120" stroke="#E8C9A0" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="130" y1="150" x2="100" y2="120" stroke="#E8C9A0" stroke-width="1.5" opacity="0.4"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Electrolytes Panel -->
+        <div class="ingredients__panel" id="electrolytes-tab">
+          <div class="ingredients__panel-grid">
+            <div class="ingredients__panel-left">
+              <h3 class="ingredients__compound-name">Electrolytes + Vitamin C</h3>
+              <p class="ingredients__compound-latin">Hydration complex</p>
+              <p class="ingredients__compound-desc">Sodium, potassium, magnesium, and a fat dose of Vitamin C walk into a can. Your body absorbs it faster than you swipe right. Ultimate recharge for when you've been doing too much (or too little).</p>
+              <div class="ingredients__stats">
+                <div class="ingredients__stat"><span class="ingredients__stat-label">Source</span><span class="ingredients__stat-value">Mineral salts + Ascorbic acid</span></div>
+                <div class="ingredients__stat"><span class="ingredients__stat-label">Role</span><span class="ingredients__stat-value">Hydration & immunity</span></div>
+                <div class="ingredients__stat"><span class="ingredients__stat-label">Dose</span><span class="ingredients__stat-value">800mg blend per serving</span></div>
+              </div>
+            </div>
+            <div class="ingredients__panel-right">
+              <div class="ingredients__molecule" data-molecule="electrolytes">
+                <svg viewBox="0 0 200 200" class="ingredients__molecule-svg">
+                  <circle cx="100" cy="40" r="7" fill="#A8D5BA" opacity="0.8"/>
+                  <circle cx="40" cy="80" r="5" fill="#A8D5BA" opacity="0.6"/>
+                  <circle cx="160" cy="80" r="5" fill="#A8D5BA" opacity="0.6"/>
+                  <circle cx="60" cy="130" r="8" fill="#A8D5BA" opacity="0.7"/>
+                  <circle cx="140" cy="130" r="8" fill="#A8D5BA" opacity="0.7"/>
+                  <circle cx="100" cy="170" r="6" fill="#A8D5BA" opacity="0.5"/>
+                  <line x1="100" y1="40" x2="40" y2="80" stroke="#A8D5BA" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="100" y1="40" x2="160" y2="80" stroke="#A8D5BA" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="40" y1="80" x2="60" y2="130" stroke="#A8D5BA" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="160" y1="80" x2="140" y2="130" stroke="#A8D5BA" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="60" y1="130" x2="100" y2="170" stroke="#A8D5BA" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="140" y1="130" x2="100" y2="170" stroke="#A8D5BA" stroke-width="1.5" opacity="0.4"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ingredients__bottom-text">
+        THREE FUNCTIONAL BLENDS. REAL DOSES. NO FILLERS. NO CAP.
+      </div>
+    </section>
+
+    <!-- ═══════════════ ABOUT / STORY SECTION ═══════════════ -->
+    <section id="about" class="about">
+      <div class="about__inner">
+        <div class="about__header">
+          <div class="about__label"><span>04</span><span class="about__sep">/</span>Story</div>
+          <h2 class="about__title">Started in a hostel room<span class="dot-accent">.</span><br>Now we're here<span class="dot-accent">.</span></h2>
+        </div>
+        <div class="about__content">
+          <div class="about__text-block">
+            <p class="about__text">ZYNO was born when I realized that every "health drink" on the shelf tasted like cardboard mixed with regret, or was so full of sugar you might as well eat a donut. I said <em>"bro, this is absolute trash"</em> — and decided to fix it.</p>
+            <p class="about__text">I spent months losing my mind over formulations, yelling at suppliers, and drinking more test batches than medically advised. The result? Three cans of effervescent madness that taste unreal and actually do something.</p>
+            <p class="about__text about__text--highlight">No investors. No fancy ass office. Just one guy, a delusional dream, and a dangerous amount of caffeine. Welcome to the fizz cult.</p>
+          </div>
+          <div class="about__image-wrap">
+            <img src="assets/images/hero-lifestyle.jpg" alt="ZYNO products lifestyle shot" class="about__image" loading="lazy" width="800" height="450">
+            <div class="about__image-caption">
+              <span class="about__image-dot"></span>
+              <span>THE LINEUP · Drink up, losers</span>
+            </div>
+          </div>
+        </div>
+        <div class="about__values">
+          <div class="about__value" data-value>
+            <span class="about__value-number">01</span>
+            <h4 class="about__value-title">Clean AF</h4>
+            <p class="about__value-desc">No artificial colors, flavors, or sweeteners. If we can't pronounce it, it's not going in the can.</p>
+          </div>
+          <div class="about__value" data-value>
+            <span class="about__value-number">02</span>
+            <h4 class="about__value-title">Actually Works</h4>
+            <p class="about__value-desc">Clinical-grade ingredients at doses that matter. Not pixie dust amounts to slap on a label.</p>
+          </div>
+          <div class="about__value" data-value>
+            <span class="about__value-number">03</span>
+            <h4 class="about__value-title">Tastes Incredible</h4>
+            <p class="about__value-desc">We taste-tested obsessively until even our pickiest friend shut up. That's the ZYNO standard.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ SECOND MARQUEE ═══════════════ -->
+    <section class="marquee-strip marquee-strip--reverse">
+      <div class="marquee__track marquee__track--reverse">
+        <div class="marquee__content">
+          <span>HEALTH IS COOL NOW ✦</span>
+          <span>ZERO SUGAR ZERO REGRETS ✦</span>
+          <span>YOUR BODY DESERVES BETTER ✦</span>
+          <span>FIZZ RESPONSIBLY ✦</span>
+          <span>FUNCTIONAL BUT MAKE IT FUN ✦</span>
+          <span>POP THE TAB ✦</span>
+          <span>MAIN CHARACTER ENERGY ✦</span>
+          <span>ZYNO OR NOTHING ✦</span>
+        </div>
+        <div class="marquee__content" aria-hidden="true">
+          <span>HEALTH IS COOL NOW ✦</span>
+          <span>ZERO SUGAR ZERO REGRETS ✦</span>
+          <span>YOUR BODY DESERVES BETTER ✦</span>
+          <span>FIZZ RESPONSIBLY ✦</span>
+          <span>FUNCTIONAL BUT MAKE IT FUN ✦</span>
+          <span>POP THE TAB ✦</span>
+          <span>MAIN CHARACTER ENERGY ✦</span>
+          <span>ZYNO OR NOTHING ✦</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ SHOP SECTION ═══════════════ -->
+    <section id="shop" class="shop">
+      <div class="shop__inner">
+        <div class="shop__header">
+          <div class="shop__label"><span>05</span><span class="shop__sep">/</span>Shop</div>
+          <h2 class="shop__title">Give us your money<span class="dot-accent">.</span></h2>
+          <p class="shop__subtitle">Free shipping on orders above ₹499. Because we're not complete assholes.</p>
+        </div>
+
+        <div class="shop__grid">
+          <div class="shop__card" data-shop-card>
+            <div class="shop__card-img-wrap" style="--card-accent: #C8B6E2">
+              <img src="assets/images/can-glutathione.jpg" alt="ZYNO Glutathione" class="shop__card-img" loading="lazy" width="300" height="400">
+            </div>
+            <div class="shop__card-info">
+              <h3 class="shop__card-name">Glutathione</h3>
+              <p class="shop__card-meta">Antioxidant · Glow · Detox</p>
+              <div class="shop__card-price">₹149 <span>/ can</span></div>
+              <div class="shop__card-qty">
+                <button class="shop__qty-btn" data-qty-minus>−</button>
+                <span class="shop__qty-num" data-qty-val>1</span>
+                <button class="shop__qty-btn" data-qty-plus>+</button>
+              </div>
+              <button class="shop__card-buy">Add to Cart</button>
+            </div>
+          </div>
+
+          <div class="shop__card" data-shop-card>
+            <div class="shop__card-img-wrap" style="--card-accent: #E8C9A0">
+              <img src="assets/images/can-acv.jpg" alt="ZYNO Apple Cider Vinegar" class="shop__card-img" loading="lazy" width="300" height="400">
+            </div>
+            <div class="shop__card-info">
+              <h3 class="shop__card-name">Apple Cider Vinegar</h3>
+              <p class="shop__card-meta">Gut Health · Digestion · Metabolism</p>
+              <div class="shop__card-price">₹149 <span>/ can</span></div>
+              <div class="shop__card-qty">
+                <button class="shop__qty-btn" data-qty-minus>−</button>
+                <span class="shop__qty-num" data-qty-val>1</span>
+                <button class="shop__qty-btn" data-qty-plus>+</button>
+              </div>
+              <button class="shop__card-buy">Add to Cart</button>
+            </div>
+          </div>
+
+          <div class="shop__card" data-shop-card>
+            <div class="shop__card-img-wrap" style="--card-accent: #A8D5BA">
+              <img src="assets/images/can-electrolytes.jpg" alt="ZYNO Electrolytes + Vit C" class="shop__card-img" loading="lazy" width="300" height="400">
+            </div>
+            <div class="shop__card-info">
+              <h3 class="shop__card-name">Electrolytes + Vit C</h3>
+              <p class="shop__card-meta">Hydration · Immunity · Recharge</p>
+              <div class="shop__card-price">₹149 <span>/ can</span></div>
+              <div class="shop__card-qty">
+                <button class="shop__qty-btn" data-qty-minus>−</button>
+                <span class="shop__qty-num" data-qty-val>1</span>
+                <button class="shop__qty-btn" data-qty-plus>+</button>
+              </div>
+              <button class="shop__card-buy">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="shop__bundle">
+          <div class="shop__bundle-badge">BEST VALUE</div>
+          <h3 class="shop__bundle-title">The Holy Trinity Pack</h3>
+          <p class="shop__bundle-desc">One of each. Because commitment issues are valid. Try all three and find your soulmate can.</p>
+          <div class="shop__bundle-price">
+            <span class="shop__bundle-old">₹447</span>
+            <span class="shop__bundle-new">₹399</span>
+          </div>
+          <button class="shop__bundle-btn">Grab the Pack →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ NEWSLETTER / CTA ═══════════════ -->
+    <section class="cta-section">
+      <div class="cta__inner">
+        <h2 class="cta__title">Don't be a stranger<span class="dot-accent">.</span></h2>
+        <p class="cta__desc">Drop your email. We promise not to spam you with garbage. Only epic drops and stuff you actually give a shit about.</p>
+        <form class="cta__form" id="cta-form">
+          <input type="email" class="cta__input" placeholder="your@email.com" required aria-label="Email address">
+          <button type="submit" class="cta__submit">Let's Fucking Go →</button>
+        </form>
+        <p class="cta__disclaimer">We'll only email you when we're drunk or have a sale. Pinky swear.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__logo">
+            <span class="footer__logo-text">ZYNO</span>
+            <span class="footer__logo-dot"></span>
+          </div>
+          <img src="assets/images/mascot-icecube.jpg" alt="Nashedi Icecube" class="footer__mascot">
+          <p class="footer__brand-desc">Effervescence that actually does shit. Made with love, questionable science, and an ungodly amount of taste testing.</p>
+        </div>
+        <div class="footer__links-group">
+          <h4 class="footer__links-title">Navigate</h4>
+          <a href="#products" class="footer__link">Flavors</a>
+          <a href="#ingredients" class="footer__link">Ingredients</a>
+          <a href="#about" class="footer__link">Our Story</a>
+          <a href="#shop" class="footer__link">Shop</a>
+        </div>
+        <div class="footer__links-group">
+          <h4 class="footer__links-title">Legal Boring Stuff</h4>
+          <a href="#" class="footer__link">Privacy Policy</a>
+          <a href="#" class="footer__link">Terms & Conditions</a>
+          <a href="#" class="footer__link">Refund Policy</a>
+          <a href="#" class="footer__link">Contact Us</a>
+        </div>
+        <div class="footer__links-group">
+          <h4 class="footer__links-title">Follow the Fizz</h4>
+          <a href="#" class="footer__link">Instagram</a>
+          <a href="#" class="footer__link">Twitter / X</a>
+          <a href="#" class="footer__link">YouTube</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2025 ZYNO. All rights reserved. drinkzyno.com</p>
+        <p class="footer__easter-egg">Made with 🫧 and questionable amounts of caffeine (ironic, we know)</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating bubbles canvas (ambient effect) -->
+  <canvas id="bubbles-canvas" class="bubbles-canvas" aria-hidden="true"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -743,25 +743,33 @@ function initFloatingCan() {
   const mouse = new THREE.Vector2();
 
   document.addEventListener('mousemove', (e) => {
-    mx = (e.clientX / window.innerWidth - 0.5) * 2;
-    my = (e.clientY / window.innerHeight - 0.5) * 2;
+    const rect = canvas.getBoundingClientRect();
     
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    mx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    my = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObject(can);
     
-    if (intersects.length > 0) {
-      canvas.style.cursor = isDragging ? 'grabbing' : 'grab';
-    } else {
-      canvas.style.cursor = isDragging ? 'grabbing' : 'default';
+    if (
+      e.clientX >= rect.left && e.clientX <= rect.right &&
+      e.clientY >= rect.top && e.clientY <= rect.bottom
+    ) {
+      if (intersects.length > 0) {
+        canvas.style.cursor = isDragging ? 'grabbing' : 'grab';
+      } else {
+        canvas.style.cursor = isDragging ? 'grabbing' : 'default';
+      }
     }
   });
 
   // Drag controls for canvas
   const handleDragStart = (e) => {
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObject(can);
     

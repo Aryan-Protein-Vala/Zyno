@@ -733,12 +733,38 @@ function initFloatingCan() {
   const particles = new THREE.Points(pGeo, pMat);
   scene.add(particles);
 
-  // Mouse parallax
+  // Mouse parallax and dragging
   let mx = 0, my = 0;
+  let isDragging = false;
+  let previousMousePosition = { x: 0, y: 0 };
+  let baseRotationY = 0;
+
   document.addEventListener('mousemove', (e) => {
     mx = (e.clientX / window.innerWidth - 0.5) * 2;
     my = (e.clientY / window.innerHeight - 0.5) * 2;
   });
+
+  // Drag controls for canvas
+  const handleDragStart = (e) => {
+    isDragging = true;
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - previousMousePosition.x;
+    baseRotationY += deltaX * 0.01;
+    previousMousePosition.x = e.clientX;
+  };
+
+  const handleDragEnd = () => {
+    isDragging = false;
+  };
+
+  canvas.addEventListener('pointerdown', handleDragStart);
+  window.addEventListener('pointermove', handleDragMove);
+  window.addEventListener('pointerup', handleDragEnd);
+  window.addEventListener('pointercancel', handleDragEnd);
 
   let t = 0;
   (function animate() {
@@ -756,7 +782,12 @@ function initFloatingCan() {
 
     can.position.y = Math.sin(t * 1.2) * 0.15;
     can.position.x = can.userData.currentX + Math.sin(t * 0.8) * 0.08;
-    can.rotation.y = t * 0.5 + mx * 0.2 + Math.PI; // +Math.PI ensures the front of texture faces camera
+    
+    if (!isDragging) {
+      baseRotationY += 0.004; // Auto rotate
+    }
+    can.rotation.y = baseRotationY + mx * 0.2 + Math.PI; // +Math.PI ensures the front of texture faces camera
+    
     can.rotation.x = 0.1 + Math.sin(t) * 0.05 + my * 0.1;
     can.rotation.z = 0.15 + Math.cos(t * 0.7) * 0.05;
     particles.rotation.y = t * 0.1;

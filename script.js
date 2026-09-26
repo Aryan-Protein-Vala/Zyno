@@ -744,7 +744,8 @@ function initFloatingCan() {
     t += 0.008;
 
     // Determine target X position based on screen width
-    const targetX = 0; // Always keep in the middle, as requested
+    const isDesktop = window.innerWidth >= 1024;
+    const targetX = isDesktop ? 1.0 : 0;
     
     // Smoothly interpolate current X position towards target
     if (typeof can.userData.currentX === 'undefined') {

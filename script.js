@@ -645,17 +645,37 @@ function initFloatingCan() {
   // Can body
   const canGeo = new THREE.CylinderGeometry(0.55, 0.55, 1.6, 64);
   const canMat = new THREE.MeshPhysicalMaterial({
-    color: 0xC8B6E2,
-    metalness: 0.6,
-    roughness: 0.25,
-    clearcoat: 1.0,
-    clearcoatRoughness: 0.1,
+    color: 0xffffff,
+    metalness: 0.2,
+    roughness: 0.3,
+    clearcoat: 0.8,
+    clearcoatRoughness: 0.2,
     reflectivity: 0.8,
     envMapIntensity: 1.2
   });
+
+  // Load textures
+  const texLoader = new THREE.TextureLoader();
+  const textures = [
+    texLoader.load('assets/images/can-glutathione.jpg'),
+    texLoader.load('assets/images/can-acv.jpg'),
+    texLoader.load('assets/images/can-electrolytes.jpg')
+  ];
+  
+  // Set default texture to repeat and offset properly so it wraps around
+  textures.forEach(tex => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+  });
+  canMat.map = textures[0];
+  
   const can = new THREE.Mesh(canGeo, canMat);
-  can.rotation.set(0.1, 0, 0.15);
+  can.rotation.set(0.1, Math.PI, 0.15); // Rotate so the front of the image is visible
   scene.add(can);
+  
+  window.switchCanTexture = (index) => {
+    canMat.map = textures[index];
+    canMat.needsUpdate = true;
+  };
 
   // Lids
   const lidGeo = new THREE.CylinderGeometry(0.55, 0.55, 0.05, 32);
@@ -722,9 +742,20 @@ function initFloatingCan() {
   let t = 0;
   (function animate() {
     t += 0.008;
+
+    // Determine target X position based on screen width
+    const isDesktop = window.innerWidth >= 1024;
+    const targetX = isDesktop ? 0.8 : 0;
+    
+    // Smoothly interpolate current X position towards target
+    if (typeof can.userData.currentX === 'undefined') {
+      can.userData.currentX = 0;
+    }
+    can.userData.currentX += (targetX - can.userData.currentX) * 0.05;
+
     can.position.y = Math.sin(t * 1.2) * 0.15;
-    can.position.x = Math.sin(t * 0.8) * 0.08;
-    can.rotation.y = t * 0.5 + mx * 0.2;
+    can.position.x = can.userData.currentX + Math.sin(t * 0.8) * 0.08;
+    can.rotation.y = t * 0.5 + mx * 0.2 + Math.PI; // +Math.PI ensures the front of texture faces camera
     can.rotation.x = 0.1 + Math.sin(t) * 0.05 + my * 0.1;
     can.rotation.z = 0.15 + Math.cos(t * 0.7) * 0.05;
     particles.rotation.y = t * 0.1;
@@ -747,4 +778,21 @@ function initFloatingCan() {
     camera.updateProjectionMatrix();
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
   });
+
+  // Arrow controls
+  let currentCanIndex = 0;
+  const prevBtn = document.getElementById('can-arrow-prev');
+  const nextBtn = document.getElementById('can-arrow-next');
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      currentCanIndex = (currentCanIndex - 1 + textures.length) % textures.length;
+      if (window.switchCanTexture) window.switchCanTexture(currentCanIndex);
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      currentCanIndex = (currentCanIndex + 1) % textures.length;
+      if (window.switchCanTexture) window.switchCanTexture(currentCanIndex);
+    });
+  }
 }

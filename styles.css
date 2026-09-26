@@ -570,7 +570,8 @@ ul {
   z-index: 22;
   display: flex;
   align-items: center;
-  padding-left: clamp(24px, 7vw, 120px);
+  justify-content: space-between;
+  padding: 0 clamp(24px, 7vw, 120px);
   pointer-events: none;
   opacity: 0;
 }
@@ -578,6 +579,31 @@ ul {
 .hero__bg-left {
   max-width: min(100%, 34vw);
   color: var(--ink);
+}
+
+.hero__can-arrows {
+  display: flex;
+  gap: 16px;
+}
+
+.can-arrow {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgb(var(--ink-rgb) / 0.15);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ink);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.can-arrow:hover {
+  background: var(--ink);
+  color: var(--bone);
+  transform: scale(1.05);
 }
 
 .hero__bg-label {

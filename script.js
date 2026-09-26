@@ -744,8 +744,7 @@ function initFloatingCan() {
     t += 0.008;
 
     // Determine target X position based on screen width
-    const isDesktop = window.innerWidth >= 1024;
-    const targetX = isDesktop ? 0.8 : 0;
+    const targetX = 0; // Always keep in the middle, as requested
     
     // Smoothly interpolate current X position towards target
     if (typeof can.userData.currentX === 'undefined') {
@@ -783,16 +782,31 @@ function initFloatingCan() {
   let currentCanIndex = 0;
   const prevBtn = document.getElementById('can-arrow-prev');
   const nextBtn = document.getElementById('can-arrow-next');
+  
+  const heroBgColors = [
+    '#E8DDF5', // Glutathione (lavender)
+    '#F5E6D0', // ACV (peach)
+    '#D4EDE0'  // Electrolytes (mint)
+  ];
+
+  const updateHeroVisuals = (index) => {
+    if (window.switchCanTexture) window.switchCanTexture(index);
+    gsap.to('.hero__reveal', {
+      backgroundColor: heroBgColors[index],
+      duration: 0.8,
+      ease: 'power2.inOut'
+    });
+  };
 
   if (prevBtn && nextBtn) {
     prevBtn.addEventListener('click', () => {
       currentCanIndex = (currentCanIndex - 1 + textures.length) % textures.length;
-      if (window.switchCanTexture) window.switchCanTexture(currentCanIndex);
+      updateHeroVisuals(currentCanIndex);
     });
     
     nextBtn.addEventListener('click', () => {
       currentCanIndex = (currentCanIndex + 1) % textures.length;
-      if (window.switchCanTexture) window.switchCanTexture(currentCanIndex);
+      updateHeroVisuals(currentCanIndex);
     });
   }
 }

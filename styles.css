@@ -586,7 +586,7 @@ ul {
   top: 50%;
   left: 65%;
   transform: translate(-50%, -50%);
-  width: min(400px, 90vw);
+  width: min(550px, 90vw);
   display: flex;
   justify-content: space-between;
   z-index: 26;
@@ -596,7 +596,7 @@ ul {
 @media (max-width: 1024px) {
   .hero__can-arrows {
     left: 50%;
-    width: min(360px, 90vw);
+    width: min(450px, 90vw);
   }
 }
 

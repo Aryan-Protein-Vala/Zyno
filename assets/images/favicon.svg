@@ -1,6 +1,7 @@
 <svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
   <rect width="1024" height="1024" fill="#FAF7F2"/>
   <g transform="translate(512, 512)">
-    <text x="-50" y="200" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="600" font-weight="900" fill="#301736" text-anchor="middle" letter-spacing="-0.02em">Z<tspan fill="#C8B6E2" font-size="600">.</tspan></text>
+    <polygon points="-250,-280 200,-280 200,-130 -90,130 200,130 200,280 -250,280 -250,130 40,-130 -250,-130" fill="#301736" />
+    <circle cx="280" cy="205" r="75" fill="#C8B6E2" />
   </g>
 </svg>
